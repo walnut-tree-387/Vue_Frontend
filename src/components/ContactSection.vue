@@ -7,8 +7,8 @@
          <div v-if="showPopup" class="popup">
             <div class="popup-content">
               <span class="close" @click="closePopup">&times;</span>
-              <EventDetailsForm 
-              @event-popup-cloased="closePopup"  
+                <EventDetailsForm 
+              @event-popup-closed="closePopup"  
               />
             </div>
         </div>
@@ -40,6 +40,7 @@ import EventDetailsForm from './EventDetailsForm.vue';
     methods: {
       openPopup() {
         this.showPopup = true;
+        event.preventDefault();
       },
       closePopup() {
         this.showPopup = false;
@@ -56,7 +57,7 @@ import EventDetailsForm from './EventDetailsForm.vue';
   background-color: transparent;
   border-radius: 8px;
   padding: 40px;
-  margin: 20px;
+  margin-top:60px;
 }
 .contact-info {
   flex: 1;

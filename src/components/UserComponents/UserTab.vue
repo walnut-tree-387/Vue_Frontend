@@ -4,9 +4,15 @@
             <button :class="{ active: activeTab === 'projects' }" @click="changeTab('projects')">Projects</button>
             <button :class="{ active: activeTab === 'workexperience' }" @click="changeTab('workexperience')">Work Experience</button>
             <button :class="{ active: activeTab === 'education' }" @click="changeTab('education')">Education</button>
+            <button :class="{ active: activeTab === 'photos' }" @click="changeTab('photos')">Photos</button>
         </div>
         <div class="tab-contents">
             <RowTable v-if="activeTab === 'projects'"/>
+            <PhotoGrid 
+                v-if="activeTab === 'photos'"
+                :mode="'photo'" 
+                :page="'profile'" 
+            />
             <div v-if="activeTab === 'workexperience'">
                 <div v-for="experience in experiences" :key="experience.id">
                     <InfoCard 
@@ -35,8 +41,9 @@
 <script>
   import RowTable from '../Utils/RowTable.vue';
   import InfoCard from '../Utils/InfoCard.vue';
+  import PhotoGrid from '../PhotoGrid.vue';
   export default {
-        components: {RowTable, InfoCard},
+        components: {RowTable, InfoCard, PhotoGrid},
         data() {
             return {
                 activeTab: 'workexperience',

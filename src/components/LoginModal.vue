@@ -83,7 +83,7 @@ export default {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 80%;
-  margin: 0 auto;
+  margin: 20px 60px;
 }
 
 .login-box form {
@@ -114,7 +114,8 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-family: 'proxima_neva';
-  width: 470px;
+  margin-left: 90px;
+  margin-right: 70px;
 }
 
 .login-box button:hover {
@@ -123,7 +124,7 @@ export default {
 .tab-buttons {
   display: flex;
   justify-content: center;
-  margin: 20px 60px;
+  margin: 20px 80px;
   width: 80%;
 }
 

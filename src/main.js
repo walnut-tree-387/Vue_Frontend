@@ -8,15 +8,43 @@ import VueRouter from 'vue-router';
 import FilmsComponent from '../src/components/FilmsComponent.vue';
 import HomePage from '../src/components/HomePage.vue';
 import UserProfile from '../src/components/UserProfile.vue'
+import PhotographerProfile from '../src/components/PhotographerProfile.vue'
+import SportsAnalystProfile from '../src/components/SportsAnalyticProfile.vue'
+import DeveloperProfile from '../src/components/DeveloperProfile.vue'
+import CinematographerProfile from '../src/components/CinematographerProfile.vue'
+import UserRegistrationComponent from '../src/LoginSection/UserRegistrationComponent.vue'
+import LoginComponent from '../src/LoginSection/LoginComponent.vue'
+import ResetPasscode from '../src/LoginSection/ResetPasscode.vue'
+import { BootstrapVue } from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+const cors = require("cors");
 
 /* add icons to the library */
 library.add(faUserSecret, faEnvelope, faPhone, faFacebook, faInstagram, faLinkedin, faYoutube, faClose, faPerson);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.use(BootstrapVue);
 Vue.use(VueRouter);
+Vue.use(cors)
 
 const router = new VueRouter({
   mode: 'history',
   routes: [
+    {
+      path: '/register',
+      name: 'Register',
+      component: UserRegistrationComponent
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: LoginComponent
+    },
+    {
+      path: '/reset-passcode',
+      name: 'Reset Passcode',
+      component: ResetPasscode
+    },
     {
       path: '/',
       name: 'HompePage',
@@ -31,6 +59,26 @@ const router = new VueRouter({
       path: '/profile',
       name: 'Profile',
       component: UserProfile
+    },
+    {
+      path: '/photographer_profile',
+      name: 'Photographer Profile',
+      component: PhotographerProfile
+    },
+    {
+      path: '/sports_analyst',
+      name: 'Sports Analyst Profile',
+      component: SportsAnalystProfile
+    },
+    {
+      path: '/developer',
+      name: 'Developer Profile',
+      component: DeveloperProfile
+    },
+    {
+      path: '/cinematographer',
+      name: 'Cinematographer Profile',
+      component: CinematographerProfile
     }
   ]
 });

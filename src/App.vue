@@ -21,7 +21,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #ffffff;
-  margin-top: 60px;
 }
 body {
   font-family: 'proxima_neva', sans-serif;

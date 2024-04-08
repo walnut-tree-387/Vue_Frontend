@@ -1,7 +1,8 @@
 <template>
   <div class="photo-grid-container">
-    <div class="photo-grid">
-      <div class="photo-card" v-for="photo in visiblePhotos" :key="photo.id">
+    <div class="photo-grid" v-if="containerPage==='home'">
+      <div class="photo-card" v-for="photo in visiblePhotos" :key="photo.id" @click="switchProfile(photo.route)" >
+        <div class="photo-title"><h3> {{ photo.title }} </h3></div>
         <img v-if="containerMode === 'photo'" :src="photo.imageUrl" alt="Photo" class="photo-img" />
         <iframe
           v-if="containerMode === 'video'"
@@ -13,7 +14,10 @@
         ></iframe>
       </div>
     </div>
-    <button v-if="canLoadMore" class="see-more-btn" @click="showLoginPopup">See more</button>
+    <div v-else>
+      <h1>More Photos</h1>
+    </div>
+    <!-- <button v-if="canLoadMore" class="see-more-btn" @click="showLoginPopup">See more</button> -->
     <LoginModal ref="loginPopup"/>
   </div>
 </template>
@@ -27,71 +31,76 @@ export default {
     mode: {
       type : String, 
       default: ''
+    },
+    page: {
+      type : String, 
+      default: ''
     }
   },
   watch: {
     mode: {
       handler(newValue) {
-        console.log(newValue);
         this.containerMode = newValue;
       },
-      immediate: true // This ensures that the watch function runs immediately when the component is mounted
-    }
+      immediate: true
     },
-    data() {
-        return {
-            containerMode : '',
-            photos: [{
+    page: {
+      handler(newVal) {
+        this.containerPage = newVal;
+      },
+      immediate: true
+    }
+  },
+  data() {
+      return {
+          containerMode : '',
+          containerPage : '',
+          photos: [{
                     id: 1,
-                    imageUrl: require('@/assets/srj.jpg'),
-                    title: 'Picture 1',
-                    description: 'Description for Picture 1.'
+                    imageUrl: require('@/assets/footballer.jpg'),
+                    title: 'Sports Analytic',
+                    description: 'Description for Picture 1.',
+                    route: '/sports_analyst'
                 },
                 {
                     id: 2,
-                    imageUrl: require('@/assets/flower.png'),
-                    title: 'Picture 1',
-                    description: 'Description for Picture 1.'
+                    imageUrl: require('@/assets/developer.png'),
+                    title: 'Developer',
+                    description: 'Description for Picture 1.',
+                    route: '/developer'
                 },
                 {
                     id: 3,
-                    imageUrl: require('@/assets/window.jpg'),
-                    title: 'Picture 1',
-                    description: 'Description for Picture 1.'
+                    imageUrl: require('@/assets/film.jpg'),
+                    title: 'Cinematographer',
+                    description: 'Description for Picture 1.',
+                    route: '/cinematographer'
                 },
                 {
                     id: 4,
-                    imageUrl: require('@/assets/cat.jpg'),
-                    title: 'Picture 1',
-                    description: 'Description for Picture 1.'
+                    imageUrl: require('@/assets/Photographer.jpg'),
+                    title: 'Photographer',
+                    description: 'Description for Picture 1.',
+                    route: '/photographer_profile'
                 },
                 {
                     id: 5,
-                    imageUrl: require('../assets/logo.png'),
-                    title: 'Picture 1',
-                    description: 'Description for Picture 1.'
+                    imageUrl: require('@/assets/cat.jpg'),
+                    title: 'Photographer',
+                    description: 'Description for Picture 1.',
+                    route: '/photographer_profile'
                 },
                 {
                     id: 6,
-                    imageUrl: require('../assets/logo.png'),
-                    title: 'Picture 1',
-                    description: 'Description for Picture 1.'
-                },
-                {
-                    id: 7,
-                    imageUrl: require('../assets/logo.png'),
-                    title: 'Picture 1',
-                    description: 'Description for Picture 1.'
-                },
-                {
-                    id: 8,
-                    imageUrl: require('../assets/logo.png'),
-                    title: 'Picture 1',
-                    description: 'Description for Picture 1.'
-                }],
-            videoId : 'dQw4w9WgXcQ',
-            itemsPerPage: 4,
-            currentPage: 1,
+                    imageUrl: require('@/assets/srj.jpg'),
+                    title: 'Photographer',
+                    description: 'Description for Picture 1.',
+                    route: '/photographer_profile'
+                }
+              ],
+          videoId : 'dQw4w9WgXcQ',
+          itemsPerPage: 4,
+          currentPage: 1,
         };
     },
     computed: {
@@ -110,6 +119,9 @@ export default {
         },
         showLoginPopup() {
           this.$refs.loginPopup.togglePopup();
+        },
+        switchProfile(route){
+          this.$router.push(route);
         }
     },
     components: { LoginModal }
@@ -117,13 +129,13 @@ export default {
 </script>
 <style scoped>
 .photo-grid-container {
-  width: 60%;
+  width: 80%;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   padding-top: 100px; 
-  color: #f5f5f5;
+  color: #c0b9b9;
 }
 
 .photo-grid {
@@ -132,22 +144,26 @@ export default {
   flex-wrap: wrap;
   justify-content: space-around;
   color: #f5f5f5;
+  margin-bottom: 10px;
 }
 
 .photo-card {
-  width: calc(33.33% - 10px);
+  width: calc(30.33% - 10px);
   height: 250px;
   margin: 5px;
   padding: 10px;
   border-radius: 10px;
+  border:2 px solid #0056b3;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   color: #f5f5f5;
+  background-color: rgb(173, 121, 56);
 }
-
+.photo-title{
+  color: #000;
+}
 .photo-img {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
+  width: 80%;
+  height: 80%;
   object-fit: cover;
   border-radius: 10px;
 }

@@ -4,9 +4,9 @@
         <form>
           <h3>Event Details</h3> 
           <DatePicker />
-          <input type="text" required class="input-field" placeholder="Enter your address">
+          <input v-model="address" type="text" required class="input-field" placeholder="Enter your address">
           <br/>
-          <button class="book-event-button" type="submit">Book event</button>
+          <button class="book-event-button" type="submit" @click="bookEvent()">Book event</button>
         </form>
     </div>
 </template>
@@ -19,13 +19,14 @@
         data() {
             return {
                 showPopup: false,
+                address: ''
 
             };
         },
         methods: {
             closePopup() {
                 this.showPopup = false;
-                this.$emit('event-popup-cloased');
+                this.$emit('event-popup-closed');
             },
         }
     };

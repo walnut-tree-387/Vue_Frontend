@@ -13,9 +13,12 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/vue-fontawesome": "^2.0.10",
-    "axios": "^1.4.0",
+    "axios": "^1.6.2",
     "axios-mock-adapter": "^1.21.5",
+    "bootstrap": "^5.3.2",
+    "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
+    "cors": "^2.8.5",
     "vform": "^2.1.2",
     "vue": "^2.7.14",
     "vue-awesome": "^4.5.0",
@@ -53,5 +56,17 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "description": "## Project setup ``` npm install ```",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AtaurEnkaizen/https---github.com-Ataur387-Walnut_Tree_Frontend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AtaurEnkaizen/https---github.com-Ataur387-Walnut_Tree_Frontend/issues"
+  },
+  "homepage": "https://github.com/AtaurEnkaizen/https---github.com-Ataur387-Walnut_Tree_Frontend#readme"
 }
