@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="this.registerResponse === ''" class="container card login-root-container">
-      <div class="card-title form-row">Register</div>
+      <div class="card-title form-row"> <b>Sign Up</b> </div>
       <div class="row card-body container form-row">
         <div class="col-md-6">
           <input type="email" required v-model="userRegistrationDto.email" class="form-control"
@@ -40,6 +40,7 @@
       <div class="row form-row">
         <button type="submit" @click="processRegistration()" class="btn btn-outline-success">Register</button>
       </div>
+      <BottomBar />
       <div v-if="emailSendingTimer" class="spinner"></div>
     </div>
     <div style="color: blue;" v-if="this.registerResponse !== ''">
@@ -49,14 +50,16 @@
 </template>
   
 <script>
+import BottomBar from '@/components/BottomBar.vue';
 import GlobalCountryDropdown from '../components/Utils/GlobalCountryDropdown.vue';
 import GlobalPhoneNumberComponent from '../components/Utils/GlobalPhoneNumberComponent.vue'
 import LoginService from '../LoginSection/LoginService';
 export default {
   components: {
     GlobalCountryDropdown,
-    GlobalPhoneNumberComponent
-  },
+    GlobalPhoneNumberComponent,
+    BottomBar
+},
   data() {
     return {
       userRegistrationDto: {

@@ -46,8 +46,6 @@
     border-radius: 2px;
     padding: 6px 12px;
   }
-  
-  /* Adjusting Bootstrap styles */
   .global-country-dropdown .btn {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;

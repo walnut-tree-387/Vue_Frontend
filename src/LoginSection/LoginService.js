@@ -1,3 +1,5 @@
+// import { data } from "vue-awesome";
+
 class LoginService { 
   constructor(apiBaseUrl) {
     this.apiBaseUrl = apiBaseUrl;
@@ -23,21 +25,54 @@ class LoginService {
       throw error;
     }
   }
+  async completeProfile(token, completeProfileDto) {
+    try {
+        const response = await fetch(`${this.apiBaseUrl}/complete-profile?token=${token}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(completeProfileDto)
+      });
+      if (!response.ok) {
+          throw new Error('Complete Profile process failed');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+        console.error('Error during complete profile:', error.message);
+        throw error;
+    }
+  }
+  async completeLoginByToken(token) {
+    try {
+        const response = await fetch(`${this.apiBaseUrl}/user?token=${token}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + token,
+          },
+      });
+      if (!response.ok) {
+          throw new Error('Login Failed');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+        console.error('Error during authentication:', error.message);
+        throw error;
+    }
+  }
+
   async authenticateWithGoogle() {
     try {
         const response = await fetch(`${this.apiBaseUrl}/authenticate/google`, {
-            method: 'POST',
-
-        });
-        
-        if (!response.ok) {
-            throw new Error('Authentication failed');
-        }
-
-        const data = await response.json();
-
-        // Open Google OAuth2 URL in a new browser tab
-        window.open(data.redirectUrl, '_blank');
+          method: 'POST',
+      });
+      if (!response.ok) {
+          throw new Error('Authentication failed');
+      }
+      const data = await response.json();
+      window.location.href = data.redirectUrl;
     } catch (error) {
         console.error('Error during authentication:', error.message);
         throw error;

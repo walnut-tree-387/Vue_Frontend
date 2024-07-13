@@ -1,6 +1,6 @@
 <template>
     <div class="container card login-root-container">
-        <div class="card-title form-row"> {{  title }}</div>
+        <div class="card-title form-row">  <b>{{  title }}</b> </div>
         <div v-if="!showEmailInput && successfulMailSent === 'false'" class="row card-body container form-row">
             <div class="row container form-row">
                 <div class="col-md-6 mx-auto">
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="col-md-3 mx-auto">
-                <a href="#" @click="authenticateWithGoole">Log in with Google?</a>
+                <a href="#" @click.prevent="authenticateWithGoole">Log in with Google?</a>
             </div>
             <div class="col-md-3 mx-auto">
                 <a href="#" @click="toggleEmailInputVisibility">Forgot Passcode?</a>
@@ -27,6 +27,7 @@
         </div>
         <div class="row container form-row" v-if="successfulMailSent !== 'success'">
             <div v-if="showEmailInput" class="col-md-6 mx-auto">
+                <a href="">Login</a>
                 <input v-model="userLoginDto.email" class="form-control password-input" type="email"
                     placeholder="Enter Your Email">
                 <div v-if="emailError" style="color: red;">{{ emailError }}</div>
@@ -94,8 +95,11 @@ export default {
         processLogin() {
             const loginService = new LoginService('http://localhost:8083');
             loginService.login(this.userLoginDto)
-                .then(() => {
-                    this.$router.push('/');
+                .then((res) => {
+                    this.$router.push({
+                        path: '/',
+                        query: { loginResponse: res }
+                    });
                 })
                 .catch(error => {
                     console.log(error);
@@ -132,6 +136,7 @@ export default {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    margin-top: 2rem;
     justify-content: space-around;
     flex-wrap: wrap;
 }

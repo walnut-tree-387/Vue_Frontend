@@ -1,6 +1,6 @@
 <template>
     <div class="container card login-root-container">
-        <div class="card-title form-row">Change Passcode</div>
+        <div class="card-title form-row"><b>Change Passcode</b></div>
         <div class="row container form-row">
             <div class="col-md-6 mx-auto">
                 <input v-model="passcode" class="form-control password-input" type="text"
@@ -18,9 +18,11 @@
             <button type="submit" @click="changePasscode()" class="btn btn-outline-success">Change Passcode</button>
         </div>
         <div v-if="emailSendingTimer" class="spinner"></div>
+        <BottomBar />
     </div>
 </template>
 <script>
+import BottomBar from '@/components/BottomBar.vue';
 import LoginService from '../LoginSection/LoginService';
 export default {
     data() {
@@ -32,42 +34,47 @@ export default {
         };
     },
     watch: {
-        passcode: function(newValue){
-            if(newValue !== ''){
-               if(this.checkPasscodeValidity())this.passcodeNotMatched = '';
-               else this.passcodeNotMatched = 'Passcode are different';
+        passcode: function (newValue) {
+            if (newValue !== '') {
+                if (this.checkPasscodeValidity())
+                    this.passcodeNotMatched = '';
+                else
+                    this.passcodeNotMatched = 'Passcode are different';
             }
         },
-        repeatPasscode: function(newValue){
-            if(newValue !== ''){
-               if(this.checkPasscodeValidity())this.passcodeNotMatched = '';
-               else this.passcodeNotMatched = 'Passcode are different';
+        repeatPasscode: function (newValue) {
+            if (newValue !== '') {
+                if (this.checkPasscodeValidity())
+                    this.passcodeNotMatched = '';
+                else
+                    this.passcodeNotMatched = 'Passcode are different';
             }
         }
     },
     methods: {
         checkPasscodeValidity() {
-           return (this.passcode === this.repeatPasscode && this.passcode !== '') ? true : false;
+            return (this.passcode === this.repeatPasscode && this.passcode !== '') ? true : false;
         },
         changePasscode() {
-            if(this.checkPasscodeValidity()){
+            if (this.checkPasscodeValidity()) {
                 this.emailSendingTimer = true;
                 const loginService = new LoginService('http://localhost:8083');
                 loginService.passcodeChange(localStorage.getItem('userEmail'), this.passcode)
-                .then(() => {
+                    .then(() => {
                     this.emailSendingTimer = false;
-                    this.$router.push({name: 'Login', path: '/login', params: { passcodeResetMessage: 'Passcode reset attempt successful, Login to continue.' } });
+                    this.$router.push({ name: 'Login', path: '/login', params: { passcodeResetMessage: 'Passcode reset attempt successful, Login to continue.' } });
                 })
-                .catch(error => {
+                    .catch(error => {
                     this.emailSendingTimer = false;
                     console.log(error);
-                })
+                });
             }
-            else{
+            else {
                 this.passcodeNotMatched = 'Passcode are different';
             }
         },
-    }
+    },
+    components: { BottomBar }
 };
 </script>
     

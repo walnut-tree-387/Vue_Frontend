@@ -15,12 +15,12 @@ import CinematographerProfile from '../src/components/CinematographerProfile.vue
 import UserRegistrationComponent from '../src/LoginSection/UserRegistrationComponent.vue'
 import LoginComponent from '../src/LoginSection/LoginComponent.vue'
 import ResetPasscode from '../src/LoginSection/ResetPasscode.vue'
+import CompleteProfileComponent from '../src/LoginSection/CompleteProfileComponent.vue'
 import { BootstrapVue } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 const cors = require("cors");
 
-/* add icons to the library */
 library.add(faUserSecret, faEnvelope, faPhone, faFacebook, faInstagram, faLinkedin, faYoutube, faClose, faPerson);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(BootstrapVue);
@@ -46,9 +46,15 @@ const router = new VueRouter({
       component: ResetPasscode
     },
     {
+      path: '/complete-profile',
+      name: 'Complete Profile',
+      component: CompleteProfileComponent
+    },
+    {
       path: '/',
       name: 'HompePage',
-      component: HomePage
+      component: HomePage,
+      props: route => ({ loginResponse: route.query.loginResponse ? route.query.loginResponse : null })
     },
     {
       path: '/films',
