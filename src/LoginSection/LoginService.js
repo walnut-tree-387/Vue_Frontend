@@ -17,7 +17,7 @@ class LoginService {
       var data = await response.json();
       if (!response.ok) {
         data = data.errorResponse
-        throw new Error(`Registration failed: ${data}`);
+        throw new Error(`${data}`);
       }
       return data;
     } catch (error) {
@@ -90,7 +90,7 @@ class LoginService {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(`Registration failed: ${data.message}`);
+        throw new Error(`Login failed: ${data.loginErrorResponse}`);
       }
       return data;
     } catch (error) {
@@ -109,7 +109,7 @@ class LoginService {
       var data = await response.json();
       if (!response.ok) {
         data = data.errorResponse
-        throw new Error(`Change Password operation failed: ${data}`);
+        throw new Error(`${data}`);
       }
       return data;
     } catch (error) {
@@ -138,20 +138,25 @@ class LoginService {
   }  
   async checkUserNameAvailability(username) {
     try {
-      const response = await fetch(`${this.apiBaseUrl}/check-username?username=` + username, {
+      const response = await fetch(`${this.apiBaseUrl}/check-username?username=${username}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      var data = await response.json();
-      if (!response.ok) {
-        data = data.errorResponse;
-        throw new Error(data);
-      }
-      return data.responseMessage;
+    const responseText = await response.text();
+    let responseData;
+    if (responseText) {
+      responseData = JSON.parse(responseText);
+    } else {
+      throw new Error('Empty response from server');
+    }
+    if (!response.ok) {
+      throw new Error(responseData.errorResponse || 'An error occurred');
+    }
+    return responseData.responseMessage;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
   }

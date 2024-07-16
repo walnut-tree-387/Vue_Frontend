@@ -1,7 +1,7 @@
 <template>
     <div class="container card login-root-container">
         <div class="card-title form-row">  <b>{{  title }}</b> </div>
-        <div v-if="!showEmailInput && successfulMailSent === 'false'" class="row card-body container form-row">
+        <div v-if="!showEmailInput" class="row card-body container form-row">
             <div class="row container form-row">
                 <div class="col-md-6 mx-auto">
                     <input v-model="userLoginDto.username" class="form-control password-input" type="text"
@@ -25,7 +25,7 @@
             <button type="submit" @click="processLogin()" class="btn btn-outline-success">Login</button>
             <p v-if="passcodeResetMessage" style="color: green;">{{ passcodeResetMessage }}</p>
         </div>
-        <div class="row container form-row" v-if="successfulMailSent !== 'success'">
+        <div class="row container form-row">
             <div v-if="showEmailInput" class="col-md-6 mx-auto">
                 <a href="">Login</a>
                 <input v-model="userLoginDto.email" class="form-control password-input" type="email"
@@ -35,21 +35,31 @@
                 <div v-if="emailSendingTimer" class="spinner"></div>
             </div>
         </div>
-        <p v-if="this.successfulMailSent === 'error'" style="color: red;">{{ changePasswordResponse }}</p>
-        <p v-if="this.successfulMailSent === 'success'" style="color: blue;">{{ changePasswordResponse }}</p>
         <BottomBar />
+        <PopUp
+            v-if="popupVisible"
+            :message="popupMessage"
+            :type="popupType"
+            :visible="popupVisible"
+            @close="closePopup"
+        />
     </div>
 </template>
     
 <script>
 import BottomBar from '@/components/BottomBar.vue';
 import LoginService from '../LoginSection/LoginService';
+import PopUp from '../components/Utils/PopUp.vue'
 export default {
     components: {
-        BottomBar
+        BottomBar,
+        PopUp,
     },
     data() {
         return {
+            popupVisible: false,
+            popupMessage: '',
+            popupType: '',
             userLoginDto: {
                 email: '',
                 password: '',
@@ -57,8 +67,6 @@ export default {
             },
             showEmailInput: false,
             emailError: '',
-            changePasswordResponse: '',
-            successfulMailSent: 'false',
             title: 'Login',
             emailSendingTimer : false,
             passcodeResetMessage: '',
@@ -78,6 +86,23 @@ export default {
         this.passcodeResetMessage = this.$route.params.passcodeResetMessage;
     },
     methods: {
+        showSuccess(message) {
+            this.popupMessage = message;
+            this.popupType = 'success';
+            this.popupVisible = true;
+        },
+        showError(message) {
+            this.popupMessage = message;
+            this.popupType = 'error';
+            this.popupVisible = true;
+        },
+        closePopup() {
+            this.popupVisible = false;
+            if(this.popupType === 'success'){
+                this.showEmailInput = false;
+                this.title = 'Login'
+            }
+        },
         checkEmailValidity(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
             return emailRegex.test(email);
@@ -102,6 +127,7 @@ export default {
                     });
                 })
                 .catch(error => {
+                    this.showError(error.message)
                     console.log(error);
                 })
         },
@@ -111,19 +137,16 @@ export default {
         },
         requestNewPassword() {
             this.emailSendingTimer = true;
-            this.successfulMailSent = '';
             const loginService = new LoginService('http://localhost:8083');
             localStorage.setItem('userEmail', this.userLoginDto.email);
             loginService.forgotPasscode(this.userLoginDto.email)
                 .then((data) => {
-                    this.changePasswordResponse = data.successfulResponse;
-                    this.successfulMailSent = 'success';
+                    this.showSuccess(data.successfulResponse);
                     this.emailSendingTimer = false;
                 })
                 .catch(error => {
                     this.emailSendingTimer = false;
-                    this.changePasswordResponse = error;
-                    this.successfulMailSent = 'error';
+                    this.showError(error);
                 })
         }
     }

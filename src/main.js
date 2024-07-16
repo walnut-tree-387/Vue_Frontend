@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faUserSecret, faEnvelope, faPhone, faClose, faPerson } from '@fortawesome/free-solid-svg-icons';
+import { faUserSecret, faEnvelope, faPhone, faClose, faPerson, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import VueRouter from 'vue-router';
 import FilmsComponent from '../src/components/FilmsComponent.vue';
@@ -21,7 +21,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 const cors = require("cors");
 
-library.add(faUserSecret, faEnvelope, faPhone, faFacebook, faInstagram, faLinkedin, faYoutube, faClose, faPerson);
+library.add(faUserSecret, faEnvelope, faPhone, faFacebook, faInstagram, faLinkedin, faYoutube, faClose, faPerson, faExclamationCircle);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);

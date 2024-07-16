@@ -34,14 +34,14 @@ export default {
         };
     },
     watch: {
-        passcode: function (newValue) {
-            if (newValue !== '') {
-                if (this.checkPasscodeValidity())
-                    this.passcodeNotMatched = '';
-                else
-                    this.passcodeNotMatched = 'Passcode are different';
-            }
-        },
+        // passcode: function (newValue) {
+        //     if (newValue !== '') {
+        //         if (this.checkPasscodeValidity())
+        //             this.passcodeNotMatched = '';
+        //         else
+        //             this.passcodeNotMatched = 'Passcode are different';
+        //     }
+        // },
         repeatPasscode: function (newValue) {
             if (newValue !== '') {
                 if (this.checkPasscodeValidity())
@@ -62,7 +62,8 @@ export default {
                 loginService.passcodeChange(localStorage.getItem('userEmail'), this.passcode)
                     .then(() => {
                     this.emailSendingTimer = false;
-                    this.$router.push({ name: 'Login', path: '/login', params: { passcodeResetMessage: 'Passcode reset attempt successful, Login to continue.' } });
+                    this.$router.push({ name: 'Login', path: '/login', 
+                    params: { passcodeResetMessage: 'Passcode reset attempt successful, Login to continue.' } });
                 })
                     .catch(error => {
                     this.emailSendingTimer = false;

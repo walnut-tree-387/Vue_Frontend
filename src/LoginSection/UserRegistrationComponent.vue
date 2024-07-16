@@ -1,111 +1,185 @@
 <template>
   <div>
-    <div v-if="this.registerResponse === ''" class="container card login-root-container">
-      <div class="card-title form-row"> <b>Sign Up</b> </div>
+    <div
+      class="container card login-root-container"
+    >
+      <div class="card-title form-row"><b>Sign Up</b></div>
       <div class="row card-body container form-row">
         <div class="col-md-6">
-          <input type="email" required v-model="userRegistrationDto.email" class="form-control"
-            placeholder="Enter your email">
-          <div v-if="emailError" style="color: red;">{{ emailError }}</div>
+          <input
+            type="email"
+            required
+            v-model="userRegistrationDto.email"
+            class="form-control"
+            placeholder="Enter your email"
+          />
+          <div v-if="emailError" style="color: red">{{ emailError }}</div>
         </div>
         <div class="col-md-6">
-          <input type="text" required v-model="userRegistrationDto.firstName" class="form-control"
-            placeholder="Enter your firstname">
+          <input
+            type="text"
+            required
+            v-model="userRegistrationDto.firstName"
+            class="form-control"
+            placeholder="Enter your firstname"
+          />
         </div>
       </div>
       <div class="row container form-row">
         <div class="col-md-6">
-          <input type="text" required v-model="userRegistrationDto.lastName" class="form-control"
-            placeholder="Enter your lastname">
+          <input
+            type="text"
+            required
+            v-model="userRegistrationDto.lastName"
+            class="form-control"
+            placeholder="Enter your lastname"
+          />
         </div>
         <div class="col-md-6">
-          <input type="text" required v-model="userRegistrationDto.userName" class="form-control" placeholder="Enter an username">
-          <div v-if="userNameHintNegative" style="color: red;">{{ userNameHintNegative }}</div>
-          <div v-if="userNameHintPositive" style="color: green;">{{ userNameHintPositive }}</div>
+          <input
+            type="text"
+            required
+            v-model="userRegistrationDto.userName"
+            class="form-control"
+            placeholder="Enter an username"
+          />
+          <div v-if="userNameHintNegative" style="color: red">
+            {{ userNameHintNegative }}
+          </div>
+          <div v-if="userNameHintPositive" style="color: green">
+            {{ userNameHintPositive }}
+          </div>
         </div>
       </div>
       <div class="row container form-row">
         <div class="col-md-6">
-          <input v-model="userRegistrationDto.password" required class="form-control password-input" type="password"
-            placeholder="Enter a passcode">
-          <div v-if="passwordHintNegative" style="color: red;">{{ passwordHintNegative }}</div>
-          <div v-if="passwordHintPositive" style="color: green;">{{ passwordHintPositive }}</div>
+          <input
+            v-model="userRegistrationDto.password"
+            required
+            class="form-control password-input"
+            type="password"
+            placeholder="Enter a passcode"
+          />
+          <div v-if="passwordHintNegative" style="color: red">
+            {{ passwordHintNegative }}
+          </div>
+          <div v-if="passwordHintPositive" style="color: green">
+            {{ passwordHintPositive }}
+          </div>
         </div>
         <GlobalCountryDropdown @CountryEvent="setCountry" />
       </div>
       <div class="row container form-row">
         <GlobalPhoneNumberComponent @PhoneNumberEvent="setPhone" />
       </div>
-      <div style="color: red;" v-if="this.erroMessage !== ''"> {{ this.erroMessage }}</div>
-      <div class="row form-row">
-        <button type="submit" @click="processRegistration()" class="btn btn-outline-success">Register</button>
+      <div style="color: red" v-if="this.erroMessage !== ''">
+        {{ this.erroMessage }}
       </div>
-      <BottomBar />
+      <div class="row form-row">
+        <button
+          :disabled="!validEmail || !validEmail || !validPass"
+          type="submit"
+          @click="processRegistration()"
+          class="btn btn-outline-success"
+        >
+          Register
+        </button>
+      </div>
       <div v-if="emailSendingTimer" class="spinner"></div>
+      <BottomBar />
     </div>
-    <div style="color: blue;" v-if="this.registerResponse !== ''">
-      <p>{{ registerResponse }}</p>
-    </div>
+    <PopUp
+      v-if="popupVisible"
+      :message="popupMessage"
+      :type="popupType"
+      :visible="popupVisible"
+      @close="closePopup"
+    />
   </div>
 </template>
-  
+
 <script>
-import BottomBar from '@/components/BottomBar.vue';
-import GlobalCountryDropdown from '../components/Utils/GlobalCountryDropdown.vue';
-import GlobalPhoneNumberComponent from '../components/Utils/GlobalPhoneNumberComponent.vue'
-import LoginService from '../LoginSection/LoginService';
+import BottomBar from "@/components/BottomBar.vue";
+import GlobalCountryDropdown from "../components/Utils/GlobalCountryDropdown.vue";
+import GlobalPhoneNumberComponent from "../components/Utils/GlobalPhoneNumberComponent.vue";
+import LoginService from "../LoginSection/LoginService";
+import PopUp from "@/components/Utils/PopUp.vue";
 export default {
   components: {
     GlobalCountryDropdown,
     GlobalPhoneNumberComponent,
-    BottomBar
-},
+    BottomBar,
+    PopUp,
+  },
   data() {
     return {
       userRegistrationDto: {
-        phoneNumber: '',
-        email: '',
-        password: '',
-        userName: '',
-        firstName: '',
-        lastName: '',
-        country: ''
+        phoneNumber: "",
+        email: "",
+        password: "",
+        userName: "",
+        firstName: "",
+        lastName: "",
+        country: "",
       },
-      registerResponse: '',
-      erroMessage: '',
-      emailError: '',
+      popupVisible: false,
+      popupMessage: "",
+      popupType: "",
+      erroMessage: "",
+      emailError: "",
+      validEmail: false,
+      validPass: false,
+      validUserName : false,
       emailSendingTimer: false,
-      userNameHintPositive: '',
-      userNameHintNegative: '',
-      passwordHintPositive: '',
-      passwordHintNegative: ''
+      userNameHintPositive: "",
+      userNameHintNegative: "",
+      passwordHintPositive: "",
+      passwordHintNegative: "",
     };
   },
   watch: {
-    'userRegistrationDto.email': function (newValue) {
+    "userRegistrationDto.email": function (newValue) {
       if (!this.checkEmailValidity(newValue)) {
-        this.emailError = 'Invalid address';
-      }
-      else {
+        this.emailError = "Invalid address";
+      } else {
         this.emailError = null;
       }
     },
-    'userRegistrationDto.userName': function (newValue) {
+    "userRegistrationDto.userName": function (newValue) {
       this.checkUserNameAvailability(newValue);
     },
-    'userRegistrationDto.password': function (newValue) {
+    "userRegistrationDto.password": function (newValue) {
       this.checkPasswordValidity(newValue);
-    }
+    },
   },
   methods: {
-    checkPasswordValidity(){
-      this.passwordHintPositive = '';
-      this.passwordHintNegative = '';
-      if(this.userRegistrationDto.password.length > 5){
-        this.passwordHintPositive = 'Okay to continue';
+    showSuccess(message) {
+      this.popupMessage = message;
+      this.popupType = "success";
+      this.popupVisible = true;
+    },
+    showError(message) {
+      this.popupMessage = message;
+      this.popupType = "error";
+      this.popupVisible = true;
+    },
+    closePopup() {
+      this.popupVisible = false;
+      if (this.popupType === "success") {
+        this.$router.push('/login');
       }
-      else{
-        this.passwordHintNegative = 'too short';
+    },
+    checkPasswordValidity() {
+      this.passwordHintPositive = "";
+      this.passwordHintNegative = "";
+      if (this.userRegistrationDto.password.length > 5) {
+        this.passwordHintPositive = "Okay to continue";
+        this.validPass = true;
+        this.passwordHintNegative = '';
+      } else {
+        this.passwordHintNegative = "too short";
+        this.passwordHintPositive = '';
+        this.validPass = false;
       }
     },
     setPhone(data) {
@@ -116,42 +190,52 @@ export default {
     },
     checkEmailValidity(email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
-      return emailRegex.test(email);
+      if(emailRegex.test(email)){
+        this.validEmail = true;
+        return true;
+      }else{
+        this.validEmail = false;
+        return false;
+      }
     },
     // https://spring-server-23-dec.onrender.com
     // http://localhost:8083
     processRegistration() {
       this.emailSendingTimer = true;
-      const loginService = new LoginService('http://localhost:8083');
-      loginService.register(this.userRegistrationDto)
+      const loginService = new LoginService("http://localhost:8083");
+      loginService
+        .register(this.userRegistrationDto)
         .then((data) => {
           this.emailSendingTimer = false;
-          this.registerResponse = data.successfulResponse;
+          this.showSuccess(data.successfulResponse);
         })
-        .catch(error => {
+        .catch((error) => {
+          this.showError(error);
           this.emailSendingTimer = false;
-          this.erroMessage = error;
-        })
+        });
     },
-    refreshUserNameFlags(){
-      this.userNameHintPositive = '';
-      this.userNameHintNegative = '';
+    refreshUserNameFlags() {
+      this.userNameHintPositive = "";
+      this.userNameHintNegative = "";
     },
-    checkUserNameAvailability(){
+    checkUserNameAvailability() {
       this.refreshUserNameFlags();
-      const loginService = new LoginService('http://localhost:8083');
-      loginService.checkUserNameAvailability(this.userRegistrationDto.userName)
+      const loginService = new LoginService("http://localhost:8083");
+      loginService
+        .checkUserNameAvailability(this.userRegistrationDto.userName)
         .then((data) => {
           this.userNameHintPositive = data;
+          this.validUserName = true;
         })
-        .catch(error =>{
-          this.userNameHintNegative = error;
-        })
-    }
-  }
+        .catch((error) => {
+          this.userNameHintNegative = error.message;
+          this.validUserName = false;
+        });
+    },
+  },
 };
 </script>
-  
+
 <style>
 .login-root-container {
   display: flex;
@@ -178,8 +262,11 @@ export default {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
-  
