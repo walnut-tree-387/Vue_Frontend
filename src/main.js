@@ -16,6 +16,7 @@ import UserRegistrationComponent from '../src/LoginSection/UserRegistrationCompo
 import LoginComponent from '../src/LoginSection/LoginComponent.vue'
 import ResetPasscode from '../src/LoginSection/ResetPasscode.vue'
 import CompleteProfileComponent from '../src/LoginSection/CompleteProfileComponent.vue'
+import Toast from 'vue-toastification'
 import { BootstrapVue } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -24,6 +25,7 @@ const cors = require("cors");
 library.add(faUserSecret, faEnvelope, faPhone, faFacebook, faInstagram, faLinkedin, faYoutube, faClose, faPerson, faExclamationCircle);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(BootstrapVue);
+Vue.use(Toast);
 Vue.use(VueRouter);
 Vue.use(cors)
 

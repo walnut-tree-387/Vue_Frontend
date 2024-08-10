@@ -58,7 +58,7 @@ export default {
         changePasscode() {
             if (this.checkPasscodeValidity()) {
                 this.emailSendingTimer = true;
-                const loginService = new LoginService('http://localhost:8083');
+                const loginService = new LoginService('http://walnuttree.hopto.org');
                 loginService.passcodeChange(localStorage.getItem('userEmail'), this.passcode)
                     .then(() => {
                     this.emailSendingTimer = false;

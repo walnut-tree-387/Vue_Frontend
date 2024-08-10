@@ -1,21 +1,22 @@
 <template>
-    <div class="user-info">
+    <div v-if="user.bio" class="user-info">
         <div class="bio">{{ user.bio }}</div>
-        <div class="completed-events">Events Completed: {{ user.completedEvents }}</div>
     </div>
-  </template>
+</template>
   
   <script>
   
   export default {
+    props: {
+      user: {
+        type: Object,
+        required: true,
+      }
+    },
     components: {
     },
     data() {
       return {
-        user : {
-            completedEvents : 21,
-            bio : "I have experience of performance optimization techniques, caching, and versioning for static resources. Understanding of development lifecycle, including working experience with Git/GitFlow, Pull Requests and Code Reviews. Experience with Node.JS and Cloud-based architectures. Experience with Scrum methodology and a team player. Experience in setup and maintaining continuous integration & delivery (Jenkins / Pipelines/ TravisCI)."
-        }
       };
     }
   };

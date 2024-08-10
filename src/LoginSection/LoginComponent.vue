@@ -35,6 +35,9 @@
                 <div v-if="emailSendingTimer" class="spinner"></div>
             </div>
         </div>
+        <ToastComponent v-if="toast" :message="message" :color="color" :response-code="responseCode"/>
+        <p v-if="this.successfulMailSent === 'error'" style="color: red;">{{ changePasswordResponse }}</p>
+        <p v-if="this.successfulMailSent === 'success'" style="color: blue;">{{ changePasswordResponse }}</p>
         <BottomBar />
         <PopUp
             v-if="popupVisible"
@@ -50,16 +53,21 @@
 import BottomBar from '@/components/BottomBar.vue';
 import LoginService from '../LoginSection/LoginService';
 import PopUp from '../components/Utils/PopUp.vue'
+import ToastComponent from '@/components/Utils/ToastComponent.vue';
 export default {
     components: {
         BottomBar,
-        PopUp,
+        PopUp,, ToastComponent
     },
     data() {
         return {
             popupVisible: false,
             popupMessage: '',
             popupType: '',
+            toast : false,
+            responseCode: 0,
+            color: 'blue',
+            message: 'Default message',
             userLoginDto: {
                 email: '',
                 password: '',
@@ -108,7 +116,7 @@ export default {
             return emailRegex.test(email);
         },
         authenticateWithGoole() {
-            const loginService = new LoginService('http://localhost:8083');
+            const loginService = new LoginService('http://walnuttree.hopto.org');
             loginService.authenticateWithGoogle()
                 .then(() => {
                     this.$router.push('/');
@@ -118,7 +126,7 @@ export default {
                 })
         },
         processLogin() {
-            const loginService = new LoginService('http://localhost:8083');
+            const loginService = new LoginService();
             loginService.login(this.userLoginDto)
                 .then((res) => {
                     this.$router.push({
@@ -128,6 +136,7 @@ export default {
                 })
                 .catch(error => {
                     this.showError(error.message)
+                    this.showCustomToast(error.message, 'red', 400);
                     console.log(error);
                 })
         },
@@ -135,9 +144,18 @@ export default {
             this.title = 'Request For Passcode change';
             this.showEmailInput = !this.showEmailInput;
         },
+        showCustomToast(message, color, responseCode) {
+            this.message = message;
+            this.color = color;
+            this.responseCode = responseCode;
+            this.toast = true;
+            setTimeout(() => {
+                this.toast = false;
+            }, 3000);
+        },
         requestNewPassword() {
             this.emailSendingTimer = true;
-            const loginService = new LoginService('http://localhost:8083');
+            const loginService = new LoginService();
             localStorage.setItem('userEmail', this.userLoginDto.email);
             loginService.forgotPasscode(this.userLoginDto.email)
                 .then((data) => {

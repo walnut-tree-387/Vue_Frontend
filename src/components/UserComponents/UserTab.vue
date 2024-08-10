@@ -94,9 +94,9 @@
 </script>
 <style scoped>
 .tab-bar{
-  margin-left: 240px;
-  margin-top: -100px;
-  margin-right: 30px;
+  /* margin-left: 240px; */
+  /* margin-top: -100px;  */
+   margin-right: 30px; 
 }
 .tab-contents{
     background-color: transparent;

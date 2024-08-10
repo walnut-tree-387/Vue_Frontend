@@ -54,7 +54,7 @@ export default {
             this.completeProfileDto.country = data;
         },
         completeProfile() {
-            const loginService = new LoginService('http://localhost:8083');
+            const loginService = new LoginService('http://walnuttree.hopto.org');
             loginService.completeProfile(this.$route.query.token, this.completeProfileDto)
                 .then((res) => {
                     this.$router.push({

@@ -202,7 +202,7 @@ export default {
     // http://localhost:8083
     processRegistration() {
       this.emailSendingTimer = true;
-      const loginService = new LoginService("http://localhost:8083");
+      const loginService = new LoginService("http://walnuttree.hopto.org");
       loginService
         .register(this.userRegistrationDto)
         .then((data) => {
@@ -220,7 +220,7 @@ export default {
     },
     checkUserNameAvailability() {
       this.refreshUserNameFlags();
-      const loginService = new LoginService("http://localhost:8083");
+      const loginService = new LoginService("http://walnuttree.hopto.org");
       loginService
         .checkUserNameAvailability(this.userRegistrationDto.userName)
         .then((data) => {

@@ -8,10 +8,10 @@
                 :user="user" 
             />
           </div>
-          <UserSummary />
-        </div>
-        <div class="user-tab">
-          <UserTab />
+          <div class="user-tab">
+            <UserSummary :user="user"/>
+            <UserTab />
+          </div>
         </div>
     </div>
   </template>
@@ -20,6 +20,7 @@
   import UserTab from './UserComponents/UserTab.vue';
   import ProfileAvatar from './Utils/ProfileAvatar.vue';
   import UserSummary from './UserComponents/UserSummary.vue';
+  import LoginService from '../LoginSection/LoginService';
   import NavBar from './NavBar.vue';
   
   export default {
@@ -33,10 +34,29 @@
       return {
         avatarLink: require('@/assets/srj.jpg'),
         user : {
-            userName : "Ataur Rahaman",
+            fullName : "Ataur Rahaman",
             occupation : "Software Engineer",
+            bio: ''
         }
       };
+    },
+    mounted() {
+      this.getUserProfile();
+    },
+    methods: {
+      getUserProfile(){
+        const userId = localStorage.getItem('userId');
+        const loginService = new LoginService();
+        loginService.getUserProfile(userId)
+            .then((data) => {
+                this.user.fullName = data.name;
+                this.user.bio = data.bio;
+                console.log(data);
+              })
+                .catch(error => {
+                  console.log(error);
+                })
+      }
     }
   };
   </script>
@@ -44,9 +64,10 @@
   <style>
   .profile-container {
     display: flex;
-    align-items: flex-start; /* Horizontally center the child components */
-    text-align: center; /* Center content within child divs */
-    margin-top: 20px; /* Add some space at the top */
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: center; 
+    margin-top: 20px;
   }
   </style>
   

@@ -1,8 +1,8 @@
 // import { data } from "vue-awesome";
 
 class LoginService { 
-  constructor(apiBaseUrl) {
-    this.apiBaseUrl = apiBaseUrl;
+  constructor() {
+    this.apiBaseUrl = process.env.VUE_APP_API_AKS_URL;
   }
 
   async register(registrationDto) {
@@ -33,6 +33,26 @@ class LoginService {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(completeProfileDto)
+      });
+      if (!response.ok) {
+          throw new Error('Complete Profile process failed');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+        console.error('Error during complete profile:', error.message);
+        throw error;
+    }
+  }
+  async getUserProfile(userId) {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`${this.apiBaseUrl}/user-profile?userId=${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+          },
       });
       if (!response.ok) {
           throw new Error('Complete Profile process failed');
