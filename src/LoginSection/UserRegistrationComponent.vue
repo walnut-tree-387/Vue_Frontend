@@ -70,12 +70,16 @@
         <GlobalCountryDropdown @CountryEvent="setCountry" />
       </div>
       <div class="row container form-row">
+        <div class="col-md-6 mx-auto">
+          <input v-model="userRegistrationDto.occupation" class="form-control password-input" type="text"
+            placeholder="Enter Your Occupation">
+        </div>
         <GlobalPhoneNumberComponent @PhoneNumberEvent="setPhone" />
       </div>
       <div style="color: red" v-if="this.erroMessage !== ''">
         {{ this.erroMessage }}
       </div>
-      <div class="row form-row">
+      <div v-if="!emailSendingTimer" class="row form-row">
         <button
           :disabled="!validEmail || !validEmail || !validPass"
           type="submit"
@@ -121,6 +125,7 @@ export default {
         firstName: "",
         lastName: "",
         country: "",
+        occupation: "",
       },
       popupVisible: false,
       popupMessage: "",
@@ -202,7 +207,7 @@ export default {
     // http://localhost:8083
     processRegistration() {
       this.emailSendingTimer = true;
-      const loginService = new LoginService("http://walnuttree.hopto.org");
+      const loginService = new LoginService();
       loginService
         .register(this.userRegistrationDto)
         .then((data) => {

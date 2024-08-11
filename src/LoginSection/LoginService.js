@@ -2,7 +2,7 @@
 
 class LoginService { 
   constructor() {
-    this.apiBaseUrl = process.env.VUE_APP_API_AKS_URL;
+    this.apiBaseUrl = process.env.VUE_APP_API_LOCAL_URL;
   }
 
   async register(registrationDto) {

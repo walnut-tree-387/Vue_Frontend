@@ -35,7 +35,6 @@
                 <div v-if="emailSendingTimer" class="spinner"></div>
             </div>
         </div>
-        <ToastComponent v-if="toast" :message="message" :color="color" :response-code="responseCode"/>
         <p v-if="this.successfulMailSent === 'error'" style="color: red;">{{ changePasswordResponse }}</p>
         <p v-if="this.successfulMailSent === 'success'" style="color: blue;">{{ changePasswordResponse }}</p>
         <BottomBar />
@@ -53,11 +52,10 @@
 import BottomBar from '@/components/BottomBar.vue';
 import LoginService from '../LoginSection/LoginService';
 import PopUp from '../components/Utils/PopUp.vue'
-import ToastComponent from '@/components/Utils/ToastComponent.vue';
 export default {
     components: {
         BottomBar,
-        PopUp,, ToastComponent
+        PopUp
     },
     data() {
         return {
@@ -136,7 +134,6 @@ export default {
                 })
                 .catch(error => {
                     this.showError(error.message)
-                    this.showCustomToast(error.message, 'red', 400);
                     console.log(error);
                 })
         },

@@ -50,7 +50,7 @@
         loginService.getUserProfile(userId)
             .then((data) => {
                 this.user.fullName = data.name;
-                this.user.bio = data.bio;
+                this.user.occupation = data.occupation;
                 console.log(data);
               })
                 .catch(error => {

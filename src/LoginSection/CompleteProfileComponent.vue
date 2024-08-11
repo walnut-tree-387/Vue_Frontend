@@ -2,6 +2,10 @@
     <div class="container card login-root-container">
         <div class="card-title form-row"> <b>{{  title }}</b> </div>
         <div class="row card-body container form-row">
+            <div class="col-md-6 mx-auto">
+                <input v-model="completeProfileDto.occupation" class="form-control password-input" type="text"
+                        placeholder="Enter Your Occupation">
+            </div>
             <div class="row container form-row">
                 <GlobalPhoneNumberComponent @PhoneNumberEvent="setPhone" />
             </div>
@@ -30,6 +34,7 @@ export default {
             completeProfileDto: {
                 country: '',
                 phoneNumber: '',
+                occupation : '',
             },
         };
     },
