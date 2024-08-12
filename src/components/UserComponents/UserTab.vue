@@ -1,19 +1,12 @@
 <template>
     <div class="tab-bar">
         <div class="tab-buttons">
-            <button :class="{ active: activeTab === 'projects' }" @click="changeTab('projects')">Projects</button>
+            <button :class="{ active: activeTab === 'events' }" @click="changeTab('events')">Events Hosted</button>
             <button :class="{ active: activeTab === 'workexperience' }" @click="changeTab('workexperience')">Work Experience</button>
             <button :class="{ active: activeTab === 'education' }" @click="changeTab('education')">Education</button>
-            <button :class="{ active: activeTab === 'photos' }" @click="changeTab('photos')">Photos</button>
         </div>
         <div class="tab-contents">
-            <RowTable v-if="activeTab === 'projects'"/>
-            <PhotoGrid 
-                v-if="activeTab === 'photos'"
-                :mode="'photo'" 
-                :page="'profile'" 
-            />
-            <div v-if="activeTab === 'workexperience'">
+            <div class="card-container" v-if="activeTab === 'workexperience'">
                 <div v-for="experience in experiences" :key="experience.id">
                     <InfoCard 
                         :degree="experience.degree"
@@ -24,7 +17,18 @@
                     />
                 </div>
             </div>
-            <div v-if="activeTab === 'education'">
+            <div class="card-container" v-if="activeTab === 'events'">
+                <div class="card-container" v-for="experience in experiences" :key="experience.id">
+                    <InfoCard 
+                        :degree="experience.degree"
+                        :institution="experience.institution"
+                        :startDate="experience.startDate"
+                        :endDate="experience.endDate"
+                        :address="experience.address"
+                    />
+                </div>
+            </div>
+            <div class="card-container" v-if="activeTab === 'education'">
                 <div v-for="education in educations" :key="education.id">
                     <InfoCard 
                         :degree="education.degree"
@@ -39,11 +43,9 @@
     </div>
 </template>
 <script>
-  import RowTable from '../Utils/RowTable.vue';
   import InfoCard from '../Utils/InfoCard.vue';
-  import PhotoGrid from '../PhotoGrid.vue';
   export default {
-        components: {RowTable, InfoCard, PhotoGrid},
+        components: {InfoCard},
         data() {
             return {
                 activeTab: 'workexperience',
@@ -93,15 +95,13 @@
     };
 </script>
 <style scoped>
-.tab-bar{
-  /* margin-left: 240px; */
-  /* margin-top: -100px;  */
-   margin-right: 30px; 
+.tab-bar{ 
+   margin: 30px; 
 }
 .tab-contents{
     background-color: transparent;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     margin-right: 40px;
 }
 .tab-buttons {
@@ -111,7 +111,6 @@
 }
 
 .tab-buttons button {
-  flex: 1;
   padding: 10px;
   border: none;
   border-radius: 8px;
@@ -126,6 +125,12 @@
 .tab-buttons button.active {
   background-color: #007bff;
   color: white;
+}
+.card-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
 }
 
 </style>
