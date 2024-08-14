@@ -46,9 +46,6 @@
           <div v-if="userNameHintNegative" style="color: red">
             {{ userNameHintNegative }}
           </div>
-          <div v-if="userNameHintPositive" style="color: green">
-            {{ userNameHintPositive }}
-          </div>
         </div>
       </div>
       <div class="row container form-row">
@@ -62,9 +59,6 @@
           />
           <div v-if="passwordHintNegative" style="color: red">
             {{ passwordHintNegative }}
-          </div>
-          <div v-if="passwordHintPositive" style="color: green">
-            {{ passwordHintPositive }}
           </div>
         </div>
         <GlobalCountryDropdown @CountryEvent="setCountry" />
@@ -136,9 +130,7 @@ export default {
       validPass: false,
       validUserName : false,
       emailSendingTimer: false,
-      userNameHintPositive: "",
       userNameHintNegative: "",
-      passwordHintPositive: "",
       passwordHintNegative: "",
     };
   },
@@ -175,15 +167,12 @@ export default {
       }
     },
     checkPasswordValidity() {
-      this.passwordHintPositive = "";
       this.passwordHintNegative = "";
       if (this.userRegistrationDto.password.length > 5) {
-        this.passwordHintPositive = "Okay to continue";
         this.validPass = true;
         this.passwordHintNegative = '';
       } else {
         this.passwordHintNegative = "too short";
-        this.passwordHintPositive = '';
         this.validPass = false;
       }
     },
@@ -203,8 +192,6 @@ export default {
         return false;
       }
     },
-    // https://spring-server-23-dec.onrender.com
-    // http://localhost:8083
     processRegistration() {
       this.emailSendingTimer = true;
       const loginService = new LoginService();
@@ -220,7 +207,6 @@ export default {
         });
     },
     refreshUserNameFlags() {
-      this.userNameHintPositive = "";
       this.userNameHintNegative = "";
     },
     checkUserNameAvailability() {
@@ -228,8 +214,7 @@ export default {
       const loginService = new LoginService("http://walnuttree.hopto.org");
       loginService
         .checkUserNameAvailability(this.userRegistrationDto.userName)
-        .then((data) => {
-          this.userNameHintPositive = data;
+        .then(() => {
           this.validUserName = true;
         })
         .catch((error) => {

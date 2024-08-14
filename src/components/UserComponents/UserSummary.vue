@@ -7,7 +7,7 @@
       <div class="row mb-3">
         <div class="col-md-6">
           <div class="info-item mb-2">
-            <strong>Phone : <span class="tab-space"></span> </strong> {{ user.occupation }}
+            <strong>Phone : <span class="tab-space"></span> </strong> {{ user.phoneNumber }}
           </div>
           <div class="info-item">
             <strong>Email : <span class="tab-space"></span> </strong> {{ user.email }}
@@ -18,13 +18,13 @@
             <strong>Country : <span class="tab-space"></span> </strong> {{ user.country }}
           </div>
           <div class="info-item">
-            <strong>User Role : <span class="tab-space"></span> </strong> {{ user.role }}
+            <strong>User Role : <span class="tab-space"></span> </strong> {{ user.userRole }}
           </div>
         </div>
       </div>
       <div class="row" style="text-align: left;">
         <div class="col-md-12">
-          <strong>Bio : <span class="tab-space"></span> </strong> {{ user.role }}
+          <strong>Bio <span class="tab-space"></span> </strong>
           <div class="bio">{{ user.bio }}</div>
         </div>
       </div>

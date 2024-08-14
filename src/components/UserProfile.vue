@@ -9,7 +9,7 @@
         />
         <UserSummary :user="user"/>
       </div>
-      <UserTab />
+      <UserTab :educations="user.educations" :experiences="user.experiences"/>
     </div>
   </div>
 </template>
@@ -32,9 +32,15 @@ export default {
     return {
       avatarLink: require('@/assets/srj.jpg'),
       user: {
-        fullName: "Ataur Rahaman",
-        occupation: "Software Engineer",
-        bio: ''
+        name: '',
+        occupation: '',
+        bio: '',
+        email: '',
+        country: '',
+        phoneNumber : '',
+        userRole: '',
+        experiences : [],
+        educations : [],
       }
     };
   },
@@ -47,13 +53,11 @@ export default {
       const loginService = new LoginService();
       loginService.getUserProfile(userId)
           .then((data) => {
-              this.user.fullName = data.name;
-              this.user.occupation = data.occupation;
-              console.log(data);
-            })
-              .catch(error => {
-                console.log(error);
-              })
+            this.user = data;
+          })
+          .catch(error => {
+            console.log(error);
+          })
     }
   }
 };
@@ -74,7 +78,8 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  margin: 30px;
+  width: 90%;
 }
 
 .profile {

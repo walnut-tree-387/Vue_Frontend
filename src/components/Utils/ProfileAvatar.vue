@@ -3,7 +3,7 @@
     <div class="profile-avatar">
       <img :src="src" alt="Profile Avatar" class="avatar-img" />
     </div>
-    <div class="username">{{ userData.fullName }}</div>
+    <div class="username">{{ userData.name }}</div>
     <div class="occupation">{{ userData.occupation }}</div>
   </div>
 </template>

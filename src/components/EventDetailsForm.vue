@@ -35,20 +35,20 @@
 .close-icon {
   width: 30px;
   height: 30px;
-  background-color: rgb(167, 166, 166); /* You can change the background color */
-  border-radius: 20%; /* Makes the shape round */
+  background-color: rgb(167, 166, 166);
+  border-radius: 20%; 
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   color: red;
   position: absolute;
-  top: 10px; /* Adjust the top position to align vertically */
-  right: 10px; /* Adjust the right position to align horizontally */
+  top: 10px; 
+  right: 10px;
 }
 
 .event-details-box {
-  position: relative; /* Needed for positioning the close icon */
+  position: relative;
   background-color: transparent;
   border-radius: 10px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);

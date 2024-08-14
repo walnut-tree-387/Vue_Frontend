@@ -35,8 +35,6 @@
                 <div v-if="emailSendingTimer" class="spinner"></div>
             </div>
         </div>
-        <p v-if="this.successfulMailSent === 'error'" style="color: red;">{{ changePasswordResponse }}</p>
-        <p v-if="this.successfulMailSent === 'success'" style="color: blue;">{{ changePasswordResponse }}</p>
         <BottomBar />
         <PopUp
             v-if="popupVisible"
@@ -117,7 +115,7 @@ export default {
             const loginService = new LoginService('http://walnuttree.hopto.org');
             loginService.authenticateWithGoogle()
                 .then(() => {
-                    this.$router.push('/');
+                    console.log("Google authentication going on...")
                 })
                 .catch(error => {
                     console.log(error);
@@ -127,6 +125,8 @@ export default {
             const loginService = new LoginService();
             loginService.login(this.userLoginDto)
                 .then((res) => {
+                    localStorage.setItem('token', res?.token);
+                    localStorage.setItem('userId', res?.userId);
                     this.$router.push({
                         path: '/',
                         query: { loginResponse: res }
